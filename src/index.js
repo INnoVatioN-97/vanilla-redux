@@ -4,24 +4,24 @@ const add = document.getElementById('add');
 const minus = document.getElementById('minus');
 const number = document.querySelector('span');
 number.innerText = 0;
+
+const ADD = 'ADD';
+const MINUS = 'MINUS';
+
 /**
  * return 되는 값이 곧 state로, store.getState() 로 가져올 수 있다.
  */
 const countModifier = (count = 0, action) => {
-	const { type } = action;
-	switch (type) {
-		case 'ADD':
-			count++;
-			break;
-		case 'MINUS':
-			count--;
-			break;
+	switch (action.type) {
+		case ADD:
+			return count + 1;
+
+		case MINUS:
+			return count - 1;
+
 		default:
-			break;
+			return count;
 	}
-	// console.log(type);
-	console.log(count);
-	return count;
 };
 
 const countStore = createStore(countModifier);
@@ -32,5 +32,5 @@ const onChange = () => {
 };
 countStore.subscribe(onChange);
 
-add.addEventListener('click', () => countStore.dispatch({ type: 'ADD' }));
-minus.addEventListener('click', () => countStore.dispatch({ type: 'MINUS' }));
+add.addEventListener('click', () => countStore.dispatch({ type: ADD }));
+minus.addEventListener('click', () => countStore.dispatch({ type: MINUS }));
