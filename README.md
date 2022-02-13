@@ -66,3 +66,81 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 ```
+
+---
+
+위와 같은 눈물의 똥꼬쇼를 쉽게하기위해 redux-toolkit이라는 라이브러리를 사용하면 동일한 기능을 훨씬 편하게 사용할 수 있다.
+
+#### 기존
+
+```javascript
+// 먼저 액션 명을 짓고, 그에 맞는 동작함수를 정의
+const ADD = 'ADD';
+const DELETE = 'DELETE';
+
+const addToDo = (text) => {
+	return {
+		type: ADD,
+		text,
+	};
+};
+
+const deleteToDo = (id) => {
+	return {
+		type: DELETE,
+		id: parseInt(id),
+	};
+};
+// 리듀서에서 초기 상태값과 액션 타입별 세부 동작을 정의
+const reducer = (state = [], action) => {
+	switch (action.type) {
+		case ADD:
+			return [{ text: action.text, id: Date.now() }, ...state];
+		case DELETE:
+			return state.filter((toDo) => toDo.id !== action.id);
+		default:
+			return state;
+	}
+};
+
+const store = createStore(reducer);
+
+// 다른곳에서 액션을 쓰기위해 export
+export const actionCreators = {
+	addToDo,
+	deleteToDo,
+};
+
+export default store;
+```
+
+#### 변경
+
+```javascript
+const addToDo = createAction('ADD');
+const deleteToDo = createAction('DELETE');
+
+/**
+ * createReducer (초기상태값, 분기)
+ * = 새 state를 return 하거나, mutate할 수 있다.
+ */
+const reducer = createReducer([], {
+	[addToDo]: (state, action) => {
+		state.push({ text: action.payload, id: Date.now() });
+	},
+	[deleteToDo]: (state, action) => {
+		// console.log(action.payload);
+		// console.log(state);
+		return state.filter((toDo) => toDo.id !== action.payload);
+	},
+});
+
+const store = createStore(reducer);
+
+export const actionCreators = {
+	addToDo,
+	deleteToDo,
+};
+
+export default store;
+```
