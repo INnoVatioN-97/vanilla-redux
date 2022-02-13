@@ -2,15 +2,17 @@
 
 Learning **Vanilla X Redux** and **React X Redux**
 
-## 알게된 점
+## Vinilla JS - Redux
 
-### store
+### 알게된 점
+
+#### store
 
 -   내 data(state) 를 넣는곳.
 -   createStore 라는 함수를 이용해 내 데이터를 저장해둘 수 있는 스토어를 생성해 data(state)를 저장하면, 여러곳에서 사용할 수 있다.
 -   store 는 **reducer** 라는 것이 필요하다.
 
-### reducer
+#### reducer
 
 -   리듀서가 반환하는 값은 애플리케이션의 상태가 된다. 초기 상태값도 지정할 수 있다.
 
@@ -42,4 +44,25 @@ const countModifier = (count = 0, action) => {
 };
 ```
 
--   이렇게 변경된 상태 값을 알기 위해서는 store.getState() 를 통해 읽어올 수 있고, 실시간으로 변경된 값을 감지하기 위해서는 store.subscribe() 를 통해 상태값이 변경되었을 때 이를 자동으로 감지할 수 있다. 흔히 onChange와 같은 역할로써 쓸 수 있.
+-   이렇게 변경된 상태 값을 알기 위해서는 store.getState() 를 통해 읽어올 수 있고, 실시간으로 변경된 값을 감지하기 위해서는 store.subscribe() 를 통해 상태값이 변경되었을 때 이를 자동으로 감지할 수 있다. 흔히 onChange와 같은 역할로써 쓸 수 있다.
+
+---
+
+## React X Redux
+
+### 알게된 점
+
+#### Provider
+
+-   리액트에서 store.subscribe()와 같이 상태변화를 감지해 컴포넌트를 재 렌더링하기 위해 index.js에서 아래와 같이 최상위 컴포넌트인 App.js 를 Provider 로 감싸고, store를 넣어준다.
+
+```javascript
+//index.js
+
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById('root')
+);
+```
