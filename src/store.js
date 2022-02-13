@@ -1,31 +1,26 @@
 import { createStore } from 'redux';
-import { createAction, createReducer } from '@reduxjs/toolkit';
+import {
+	configureStore,
+	createAction,
+	createReducer,
+	createSlice,
+} from '@reduxjs/toolkit';
 
-// 액션명을 정의
-const addToDo = createAction('ADD');
-const deleteToDo = createAction('DELETE');
-
-/**
- * createReducer (초기상태값, 분기){
- *  [액션명] : (state, action) => {세부 동작}
- * }
- * = 새 state를 return 하거나, mutate할 수 있다.
- */
-const reducer = createReducer([], {
-	[addToDo]: (state, action) => {
-		state.push({ text: action.payload, id: Date.now() });
-	},
-	[deleteToDo]: (state, action) => {
-		return state.filter((toDo) => toDo.id !== action.payload);
+const toDos = createSlice({
+	name: 'toDosReducer',
+	initialState: [],
+	reducers: {
+		add: (state, action) => {
+			state.push({ text: action.payload, id: Date.now() });
+		},
+		remove: (state, action) => {
+			return state.filter((toDo) => toDo.id !== action.payload);
+		},
 	},
 });
 
-const store = createStore(reducer);
+console.log(toDos.actions);
 
-// 이전과 동일
-export const actionCreators = {
-	addToDo,
-	deleteToDo,
-};
+export const { add, remove } = toDos.actions;
 
-export default store;
+export default configureStore({ reducer: toDos.reducer, action: toDos.actions });
